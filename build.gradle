@@ -9,6 +9,11 @@ plugins {
   id 'org.openjfx.javafxplugin' version '0.1.0'
 }
 
+group = "org.kku"
+version = "1.0.1"
+
+defaultTasks 'jar'
+
 apply from: 'build-eclipse.gradle'
 
 repositories {
