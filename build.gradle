@@ -14,6 +14,11 @@ version = "1.0.1"
 
 defaultTasks 'jar'
 
+test
+{
+  useJUnitPlatform()
+}
+
 apply from: 'build-eclipse.gradle'
 
 repositories {
@@ -24,4 +29,12 @@ javafx {
     version = "24"
     modules = [ 'javafx.controls' ]
 }
+
+dependencies {
+  implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
+
+  testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
+  testImplementation 'org.junit.platform:junit-platform-launcher'
+}
+
 
