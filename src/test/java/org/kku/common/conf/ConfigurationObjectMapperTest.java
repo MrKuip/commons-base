@@ -2,15 +2,10 @@ package org.kku.common.conf;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import java.util.function.Function;
-
 import org.junit.jupiter.api.Test;
 import org.kku.common.test.TestUtil;
-
 import com.fasterxml.jackson.databind.json.JsonMapper;
-
-import javafx.beans.property.SimpleObjectProperty;
 
 public class ConfigurationObjectMapperTest
 {
@@ -44,11 +39,9 @@ public class ConfigurationObjectMapperTest
     String text2;
 
     testConfiguration = new TestConfiguration();
-    testConfiguration.mi_int = 1;
     testConfiguration.mi_string = "String1";
-    testConfiguration.mi_stringProperty.set("String2");
-    testConfiguration.mi_intProperty.set(null);
-    testConfiguration.mi_doubleProperty = null;
+    testConfiguration.mi_int = 10;
+    testConfiguration.mi_double = 11.0;
 
     mapper = ConfigurationObjectMapper.createMapper();
     text = mapper.writeValueAsString(testConfiguration);
@@ -58,11 +51,9 @@ public class ConfigurationObjectMapperTest
     testConfiguration2 = mapper.readValue(text, TestConfiguration.class);
 
     assertNotNull(testConfiguration2);
-    assertEquals(testConfiguration.mi_int, testConfiguration2.mi_int);
     assertEquals(testConfiguration.mi_string, testConfiguration2.mi_string);
-    assertEquals(testConfiguration.mi_stringProperty.get(), testConfiguration2.mi_stringProperty.get());
-    assertEquals(testConfiguration.mi_intProperty.get(), testConfiguration2.mi_intProperty.get());
-    assertEquals(null, testConfiguration2.mi_intProperty.get());
+    assertEquals(testConfiguration.mi_int, testConfiguration2.mi_int);
+    assertEquals(testConfiguration.mi_double, testConfiguration2.mi_double);
 
     text2 = mapper.writeValueAsString(testConfiguration2);
     assertEquals(text, text2);
@@ -71,10 +62,8 @@ public class ConfigurationObjectMapperTest
   public static class TestConfiguration
     extends Configuration
   {
-    private int mi_int;
     private String mi_string;
-    private SimpleObjectProperty<String> mi_stringProperty = new SimpleObjectProperty<>();
-    private SimpleObjectProperty<Integer> mi_intProperty = new SimpleObjectProperty<>(null);
-    private SimpleObjectProperty<Double> mi_doubleProperty = null;
+    private Integer mi_int = 1;
+    private Double mi_double = 2.0;
   }
 }

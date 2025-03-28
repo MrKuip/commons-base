@@ -2,17 +2,24 @@ package org.kku.common.conf;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Stream;
-
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.kku.common.test.TestResourceProvider;
+import org.kku.common.util.ResourceLoader;
 
 class LanguageConfigurationTest
 {
+  @BeforeAll
+  static void setup()
+  {
+    ResourceLoader.getInstance().register(TestResourceProvider.getInstance());
+  }
+
   @Test
   void testDefault()
   {
@@ -38,9 +45,10 @@ class LanguageConfigurationTest
     assertNotNull(language.getFlag(),
         "The flag must not be null. Execute 'jar -tvf lib/flagpack-flags.jar' to search for a name");
     /*
-    assertNotNull(language.getFlagImage(), "The flag " + language.getFlag()
-        + " is not valid! Execute 'jar -tvf lib/flagpack-flags.jar' to search for a valid name");
-        */
+     * assertNotNull(language.getFlagImage(), "The flag " + language.getFlag() +
+     * " is not valid! Execute 'jar -tvf lib/flagpack-flags.jar' to search for a valid name"
+     * );
+     */
     assertNotNull(language.getName(), "The 'name' of a language must not be null.");
     assertNotNull(language.getLanguage(), "The 'language' of a language must not be null.");
     assertNotNull(language.getLocale(), "The 'locale' of a language must not be null.");

@@ -6,10 +6,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
-
 import org.kku.common.util.Log;
-
+import org.kku.common.util.ResourceLoader;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 
 public class ConfigurationManager
@@ -44,28 +42,52 @@ public class ConfigurationManager
   private Configuration loadConfiguration(Class<? extends Configuration> clazz)
   {
     String configurationName;
-    
-    configurationName = "/" + clazz.getSimpleName() + ".json";
-    
-    return ModuleLayer.boot().modules().stream().filter(m -> m.getName().startsWith("org.kku")).
-    map(m -> {
-       try(InputStream is = m.getResourceAsStream(configurationName))
-       {
-    	 if(is != null)
-    	 {
-           byte[] bytes;
 
-           bytes = is.readNBytes(CONFIGURATION_MAX_BYTES);
-           return loadConfiguration(clazz, bytes);
-    	 }
-       }
-       catch (Exception ex)
-       {
-       }
-       return null;
-    	}).filter(o -> o != null).findFirst().get();
+    configurationName = clazz.getSimpleName();
+    try (InputStream is = ResourceLoader.getInstance().getResourceAsStream(configurationName))
+    {
+      if (is != null)
+      {
+        byte[] bytes;
+
+        bytes = is.readNBytes(CONFIGURATION_MAX_BYTES);
+        return loadConfiguration(clazz, bytes);
+      }
     }
-  
+    catch (Exception ex)
+    {
+      return null;
+    }
+
+    return null;
+  }
+
+  private Configuration loadConfiguration2(Class<? extends Configuration> clazz)
+  {
+    String configurationName;
+
+    configurationName = "/" + clazz.getSimpleName() + ".json";
+
+    return ModuleLayer.boot().modules().stream().filter(m -> m.getName().startsWith("org.kku")).map(m -> {
+      try (InputStream is = m.getResourceAsStream(configurationName))
+      {
+        System.out.println("evaluate:" + m.getName());
+        if (is != null)
+        {
+          byte[] bytes;
+
+          bytes = is.readNBytes(CONFIGURATION_MAX_BYTES);
+          System.out.println("  found!");
+          return loadConfiguration(clazz, bytes);
+        }
+      }
+      catch (Exception ex)
+      {
+      }
+      return null;
+    }).filter(o -> o != null).findFirst().get();
+  }
+
   private Configuration loadConfiguration(Class<? extends Configuration> clazz, byte[] bytes)
   {
     String configurationName;

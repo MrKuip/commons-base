@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 
 public class ConfigurationObjectMapper
 {
-  public static JsonMapper createMapper()
+  static JsonMapper createMapper()
   {
     Builder builder;
     JsonMapper mapper;
@@ -79,6 +79,8 @@ public class ConfigurationObjectMapper
   {
     return new PropertyNamingStrategy()
     {
+      private static final long serialVersionUID = 1L;
+      
       private Function<String, String> mi_convertFieldName = convertFieldName();
 
       @Override
@@ -89,7 +91,7 @@ public class ConfigurationObjectMapper
     };
   }
 
-  public static Module getConfigurationModule()
+  private static Module getConfigurationModule()
   {
     SimpleModule module;
 
