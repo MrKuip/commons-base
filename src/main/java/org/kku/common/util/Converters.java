@@ -2,6 +2,8 @@ package org.kku.common.util;
 
 import java.nio.file.Path;
 import java.util.function.Function;
+import org.kku.common.conf.Language;
+import org.kku.common.conf.LanguageConfiguration;
 
 public class Converters
 {
@@ -38,6 +40,11 @@ public class Converters
   public static <E extends Enum<E>> Converter<E> getEnumConverter(Class<E> enumClass)
   {
     return new Converter<E>((s) -> Enum.valueOf(enumClass, s), (e) -> e.name());
+  }
+
+  public static Converter<Language> getLanguageConverter()
+  {
+    return new Converter<Language>((s) -> LanguageConfiguration.getInstance().getLanguageById(s), (e) -> e.getName());
   }
 
   public static class Converter<T>
