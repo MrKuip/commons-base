@@ -9,15 +9,13 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.kku.common.test.TestResourceProvider;
-import org.kku.common.util.ResourceLoader;
 
 class LanguageConfigurationTest
 {
   @BeforeAll
   static void setup()
   {
-    ResourceLoader.getInstance().register(TestResourceProvider.getInstance());
+    //ResourceLoader.getInstance().register(TestResourceProvider.getInstance());
   }
 
   @Test

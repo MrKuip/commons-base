@@ -10,7 +10,5 @@ module org.kku.common
   exports org.kku.common.conf.dao;
   exports org.kku.common.test;
 
-  uses org.kku.common.util.ResourceProviderIF;
-
   opens org.kku.common.conf to com.fasterxml.jackson.databind;
 }

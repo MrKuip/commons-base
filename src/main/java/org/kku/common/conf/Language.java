@@ -1,9 +1,10 @@
 package org.kku.common.conf;
 
+import java.io.InputStream;
 import java.util.Locale;
-
+import org.kku.common.util.Log;
+import org.kku.common.util.ResourceLoader;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-//import javafx.scene.image.Image;
 
 public class Language
   extends ConfigurationItem
@@ -49,25 +50,21 @@ public class Language
     return mi_flag;
   }
 
-/*
-  public Image getFlagImage()
+  public InputStream getFlagResourceAsStream()
   {
-    return iconByNameMap.computeIfAbsent(getFlag(), flag -> {
-      String flagName;
+    String flagName;
 
-      flagName = "/flags/" + flag + ".png";
-      try (InputStream is = Language.class.getResourceAsStream(flagName))
-      {
-        return is == null ? null : new Image(is);
-      }
-      catch (Exception e)
-      {
-        Log.log.error(e, "Cannot load image " + flagName);
-        throw new RuntimeException(e);
-      }
-    });
+    flagName = "flags/" + getFlag() + ".png";
+    try
+    {
+      return ResourceLoader.getInstance().getResourceAsStream(flagName);
+    }
+    catch (Exception e)
+    {
+      Log.log.error(e, "Cannot load flag " + flagName);
+      throw new RuntimeException(e);
+    }
   }
-  */
 
   public void setDefault(boolean isDefault)
   {

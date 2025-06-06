@@ -1,16 +1,14 @@
 package org.kku.common.util;
 
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.net.URL;
+import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.ServiceLoader;
 
 public class ResourceLoader
 {
   private final static ResourceLoader m_instance = new ResourceLoader();
-  private List<ResourceProviderIF> m_registeredProviderList = new ArrayList<>();
 
   private ResourceLoader()
   {
@@ -21,25 +19,26 @@ public class ResourceLoader
     return m_instance;
   }
 
-  public InputStream getResourceAsStream(String resourceName)
+  public InputStream getResourceAsStream(String resourceName) throws IOException
   {
-    Optional<InputStream> is;
-    String rn;
+    List<URL> list;
 
-    rn = "/" + resourceName + ".json";
-    is = m_registeredProviderList.stream().map(rp -> rp.getResourceAsStream(rn)).filter(Objects::nonNull).findFirst();
-    if (is.isPresent())
+    list = getResources(resourceName);
+    if (list.isEmpty())
     {
-      return is.get();
+      return null;
     }
 
-    return ServiceLoader.load(ResourceProviderIF.class).stream().map(rp -> {
-      return rp.get().getResourceAsStream(rn);
-    }).filter(Objects::nonNull).findFirst().get();
+    return list.get(0).openStream();
   }
 
-  public void register(ResourceProviderIF resourceProvider)
+  public List<URL> getResources(String resourceName) throws IOException
   {
-    m_registeredProviderList.add(resourceProvider);
+    resourceName = "module-resources/" + resourceName;
+    resourceName = resourceName.replace("//", "/");
+
+    System.out.println("getResources(" + resourceName);
+
+    return Collections.list(getClass().getClassLoader().getResources(resourceName));
   }
 }

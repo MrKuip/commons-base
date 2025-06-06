@@ -43,7 +43,7 @@ public class ConfigurationManager
   {
     String configurationName;
 
-    configurationName = clazz.getSimpleName();
+    configurationName = clazz.getSimpleName() + ".json";
     try (InputStream is = ResourceLoader.getInstance().getResourceAsStream(configurationName))
     {
       if (is != null)
@@ -60,32 +60,6 @@ public class ConfigurationManager
     }
 
     return null;
-  }
-
-  private Configuration loadConfiguration2(Class<? extends Configuration> clazz)
-  {
-    String configurationName;
-
-    configurationName = "/" + clazz.getSimpleName() + ".json";
-
-    return ModuleLayer.boot().modules().stream().filter(m -> m.getName().startsWith("org.kku")).map(m -> {
-      try (InputStream is = m.getResourceAsStream(configurationName))
-      {
-        System.out.println("evaluate:" + m.getName());
-        if (is != null)
-        {
-          byte[] bytes;
-
-          bytes = is.readNBytes(CONFIGURATION_MAX_BYTES);
-          System.out.println("  found!");
-          return loadConfiguration(clazz, bytes);
-        }
-      }
-      catch (Exception ex)
-      {
-      }
-      return null;
-    }).filter(o -> o != null).findFirst().get();
   }
 
   private Configuration loadConfiguration(Class<? extends Configuration> clazz, byte[] bytes)
