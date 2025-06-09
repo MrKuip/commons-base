@@ -11,6 +11,7 @@ public class AppSettings
   public static final AppPropertyType<Double> HEIGHT;
   public static final AppPropertyType<Double> X;
   public static final AppPropertyType<Double> Y;
+  public static final AppPropertyType<String> SELECTED_ID;
 
   static
   {
@@ -18,6 +19,7 @@ public class AppSettings
     HEIGHT = createAppPropertyType("HEIGHT", Converters.getDoubleConverter());
     X = createAppPropertyType("X", Converters.getDoubleConverter());
     Y = createAppPropertyType("Y", Converters.getDoubleConverter());
+    SELECTED_ID = createAppPropertyType("SELECTED_ID", Converters.getStringConverter());
   }
 
   protected AppSettings()
