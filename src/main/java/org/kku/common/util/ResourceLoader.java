@@ -37,8 +37,6 @@ public class ResourceLoader
     resourceName = "module-resources/" + resourceName;
     resourceName = resourceName.replace("//", "/");
 
-    System.out.println("getResources(" + resourceName);
-
     return Collections.list(getClass().getClassLoader().getResources(resourceName));
   }
 }

@@ -42,7 +42,7 @@ public class StreamUtil
     @Override
     public BiConsumer<List<T>, T> accumulator()
     {
-      return (list, item) -> evaluate(item);
+      return (_, item) -> evaluate(item);
     }
 
     @Override

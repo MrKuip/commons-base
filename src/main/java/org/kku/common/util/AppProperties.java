@@ -194,7 +194,7 @@ public class AppProperties
     })
     public PropertyChangeListener getChangeListener()
     {
-      return (oldValue, newValue) -> {
+      return (_, newValue) -> {
         set((T) newValue);
       };
     }
