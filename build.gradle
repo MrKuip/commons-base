@@ -36,6 +36,11 @@ javafx {
     modules = [ 'javafx.controls' ]
 }
 
+java {
+  sourceCompatibility = JavaVersion.VERSION_23
+  targetCompatibility = JavaVersion.VERSION_23
+}
+
 dependencies {
   implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
 
