@@ -5,6 +5,7 @@ module org.kku.common
   requires javafx.base;
 
   exports org.kku.common.util;
+  exports org.kku.common.util.preferences;
   exports org.kku.common.util.value;
   exports org.kku.common.conf;
   exports org.kku.common.conf.dao;
