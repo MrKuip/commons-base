@@ -40,13 +40,7 @@ class LanguageConfigurationTest
   @MethodSource("provideLanguageStream")
   void testLanguage(Language language)
   {
-    assertNotNull(language.getFlag(),
-        "The flag must not be null. Execute 'jar -tvf lib/flagpack-flags.jar' to search for a name");
-    /*
-     * assertNotNull(language.getFlagImage(), "The flag " + language.getFlag() +
-     * " is not valid! Execute 'jar -tvf lib/flagpack-flags.jar' to search for a valid name"
-     * );
-     */
+    assertNotNull(language.getFlag(), "The flag must not be null.");
     assertNotNull(language.getName(), "The 'name' of a language must not be null.");
     assertNotNull(language.getLanguage(), "The 'language' of a language must not be null.");
     assertNotNull(language.getLocale(), "The 'locale' of a language must not be null.");

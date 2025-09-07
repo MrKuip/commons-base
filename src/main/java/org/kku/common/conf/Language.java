@@ -1,9 +1,6 @@
 package org.kku.common.conf;
 
-import java.io.InputStream;
 import java.util.Locale;
-import org.kku.common.util.Log;
-import org.kku.common.util.ResourceLoader;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Language
@@ -48,22 +45,6 @@ public class Language
   public String getFlag()
   {
     return mi_flag;
-  }
-
-  public InputStream getFlagResourceAsStream()
-  {
-    String flagName;
-
-    flagName = "flags/" + getFlag() + ".png";
-    try
-    {
-      return ResourceLoader.getInstance().getResourceAsStream(flagName);
-    }
-    catch (Exception e)
-    {
-      Log.log.error(e, "Cannot load flag " + flagName);
-      throw new RuntimeException(e);
-    }
   }
 
   public void setDefault(boolean isDefault)
