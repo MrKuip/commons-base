@@ -1,0 +1,13 @@
+{
+  "languageList" : [ {
+    "name" : "English",
+    "language" : "en",
+    "flag" : "flag-gb-4x3",
+    "default" : true
+  }, {
+    "name" : "Nederlands",
+    "language" : "nl",
+    "flag" : "flag-nl-4x3",
+    "default" : false
+  } ]
+}
