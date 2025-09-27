@@ -3,7 +3,6 @@ package org.kku.common.conf;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -80,7 +79,7 @@ public class ConfigurationObjectMapper
     return new PropertyNamingStrategy()
     {
       private static final long serialVersionUID = 1L;
-      
+
       private Function<String, String> mi_convertFieldName = convertFieldName();
 
       @Override

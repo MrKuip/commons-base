@@ -1,23 +1,17 @@
 package org.kku.common.conf;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Stream;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 class LanguageConfigurationTest
 {
-  @BeforeAll
-  static void setup()
-  {
-    //ResourceLoader.getInstance().register(TestResourceProvider.getInstance());
-  }
-
   @Test
   void testDefault()
   {
@@ -48,5 +42,7 @@ class LanguageConfigurationTest
         Stream.of(Locale.getAvailableLocales()).filter(locale -> locale.equals(language.getLocale())).findFirst()
             .isPresent(),
         "The 'locale' " + language.getLocale() + " is not valid! It cannot be found in Locale.getAvailableLocales()");
+    assertEquals(LanguageConfiguration.getInstance(), language.getParent());
+    assertEquals(LanguageConfiguration.getInstance(), language.getRoot());
   }
 }

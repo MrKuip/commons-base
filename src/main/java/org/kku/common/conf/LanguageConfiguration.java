@@ -5,12 +5,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 public class LanguageConfiguration
   extends Configuration
 {
+  @JsonManagedReference
   private List<Language> m_languageList = new ArrayList<>();
   @JsonIgnore
   private Map<String, Language> m_languageByNameMap;
