@@ -19,6 +19,21 @@ public class AppPreferences
   {
   }
 
+  static public <T> AppProperty<T> createPreference(String name, T defaultValue)
+  {
+    return createPreference(name, getDefaultConverter(defaultValue), defaultValue);
+  }
+
+  private static <T> Converter<T> getDefaultConverter(T defaultValue)
+  {
+    if (defaultValue instanceof Boolean)
+    {
+      return (Converter<T>) Converters.getBooleanConverter();
+    }
+
+    return null;
+  }
+
   static public <T> AppProperty<T> createPreference(String name, Converter<T> converter, T defaultValue)
   {
     return AppProperties.get(Project.getInstance().getName() + ".preferences").createAppPropertyType(name, converter)
