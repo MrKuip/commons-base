@@ -1,5 +1,6 @@
 package org.kku.common.conf;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
@@ -52,5 +53,7 @@ class LanguageConfigurationTest
         Stream.of(Locale.getAvailableLocales()).filter(locale -> locale.equals(language.getLocale())).findFirst()
             .isPresent(),
         "The 'locale' " + language.getLocale() + " is not valid! It cannot be found in Locale.getAvailableLocales()");
+    assertEquals(LanguageConfiguration.getInstance(), language.getParent());
+    assertEquals(LanguageConfiguration.getInstance(), language.getRoot());
   }
 }

@@ -6,8 +6,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import org.kku.common.util.Log;
 import org.kku.common.util.ResourceLoader;
+import org.kku.common.util.WeakHashSet;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 
 public class ConfigurationManager
@@ -17,6 +19,7 @@ public class ConfigurationManager
 
   private final Map<Class<? extends Configuration>, Configuration> configurationByClassMap = new HashMap<>();
   private final JsonMapper m_objectMapper = ConfigurationObjectMapper.createMapper();
+  private final Map<String, WeakHashSet<ConfigurationListenerIF>> listenerMap = new HashMap<>();
 
   private ConfigurationManager()
   {
@@ -126,6 +129,48 @@ public class ConfigurationManager
     catch (IOException e)
     {
       e.printStackTrace();
+    }
+  }
+
+  void addConfigurationListener(Class<? extends Configuration> clazz, ConfigurationListenerIF listener)
+  {
+    WeakHashSet<ConfigurationListenerIF> listeners;
+    String key;
+
+    key = clazz.getName();
+
+    listeners = listenerMap.get(key);
+    if (listeners == null)
+    {
+      listeners = new WeakHashSet<ConfigurationListenerIF>();
+      listenerMap.put(key, listeners);
+    }
+
+    listeners.add(listener);
+  }
+
+  void removeConfigurationListener(Class<? extends Configuration> clazz, ConfigurationListenerIF listener)
+  {
+    Set<ConfigurationListenerIF> listeners;
+
+    listeners = listenerMap.get(clazz.getName());
+    if (listeners != null)
+    {
+      listeners.remove(listener);
+    }
+  }
+
+  void fireChanged(Class<? extends Configuration> clazz)
+  {
+    Set<ConfigurationListenerIF> listeners;
+
+    listeners = listenerMap.get(clazz.getName());
+    if (listeners != null)
+    {
+      for (ConfigurationListenerIF listener : listeners)
+      {
+        listener.configurationChanged();
+      }
     }
   }
 
