@@ -6,8 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.kku.common.test.BaseTest;
 
 public class ConfigurationManagerTest
+  extends BaseTest
 {
   @Test
   void saveAndGetConfiguration()

@@ -4,10 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.util.function.Function;
 import org.junit.jupiter.api.Test;
+import org.kku.common.test.BaseTest;
 import org.kku.common.test.TestUtil;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 
 public class ConfigurationObjectMapperTest
+  extends BaseTest
 {
   @Test
   void testConvertFieldName()

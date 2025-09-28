@@ -5,19 +5,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Stream;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.kku.common.test.BaseTest;
+import org.kku.common.util.AppPreferences;
 
 class LanguageConfigurationTest
+  extends BaseTest
 {
-  @BeforeAll
-  static void setup()
-  {
-    //ResourceLoader.getInstance().register(TestResourceProvider.getInstance());
-  }
-
   @Test
   void testDefault()
   {
@@ -34,6 +30,14 @@ class LanguageConfigurationTest
   static Stream<Language> provideLanguageStream()
   {
     return LanguageConfiguration.getInstance().getList().stream();
+  }
+
+  @Test
+  void testPreference()
+  {
+    Language languagePreference = AppPreferences.languagePreference.get();
+
+    assertNotNull(languagePreference);
   }
 
   @ParameterizedTest

@@ -49,7 +49,7 @@ public class Log
   /**
    * Create a file handler that will roll over when it's limit is reached.<br>
    * 
-   * The log files are placed in the directory 'temp'/jdiskusage.<br>
+   * The log files are placed in the directory 'temp'/'${project.name}'.<br>
    * The intermediate directories are created if they do not exist.<br>
    * 
    * @param limit  the maximum number of bytes to write to any one file
@@ -75,7 +75,8 @@ public class Log
       {
         FileHandler handler;
 
-        handler = new FileHandler("%t/jdiskusage/" + fileName + "%g.log", limit, count, append);
+        handler = new FileHandler("%t/" + Project.getInstance().getName().toLowerCase() + "/" + fileName + "%g.log",
+            limit, count, append);
         handler.setFormatter(createDefaultFormatter());
 
         return handler;

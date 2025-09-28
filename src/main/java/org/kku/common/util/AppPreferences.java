@@ -7,8 +7,6 @@ import org.kku.common.util.Converters.Converter;
 
 public class AppPreferences
 {
-  private final static String PREFERENCES_FILE_NAME = "JDiskUsage.preferences";
-
   public final static AppProperty<Language> languagePreference;
 
   static
@@ -23,7 +21,7 @@ public class AppPreferences
 
   static public <T> AppProperty<T> createPreference(String name, Converter<T> converter, T defaultValue)
   {
-    return AppProperties.get(PREFERENCES_FILE_NAME).createAppPropertyType(name, converter)
+    return AppProperties.get(Project.getInstance().getName() + ".preferences").createAppPropertyType(name, converter)
         .forSubject(AppPreferences.class, defaultValue);
   }
 }
