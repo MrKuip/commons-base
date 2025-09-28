@@ -6,7 +6,6 @@ plugins {
   id 'java-library'
   id 'eclipse'
   id 'application'
-  id 'org.openjfx.javafxplugin' version '0.1.0'
 }
 
 group = "org.kku"
@@ -31,14 +30,9 @@ repositories {
   mavenCentral()
 }
 
-javafx {
-    version = "24"
-    modules = [ 'javafx.controls' ]
-}
-
 java {
-  sourceCompatibility = JavaVersion.VERSION_23
-  targetCompatibility = JavaVersion.VERSION_23
+  sourceCompatibility = JavaVersion.VERSION_1_9
+  targetCompatibility = JavaVersion.VERSION_1_9
 }
 
 dependencies {

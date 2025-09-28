@@ -61,7 +61,7 @@ public class Language
   {
     if (mi_locale == null)
     {
-      mi_locale = Locale.of(mi_language);
+      mi_locale = new Locale(mi_language);
     }
 
     return mi_locale;

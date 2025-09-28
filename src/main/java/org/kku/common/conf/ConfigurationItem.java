@@ -28,9 +28,9 @@ public abstract class ConfigurationItem
     parent = this;
     do
     {
-      if (parent instanceof Configuration root)
+      if (parent instanceof Configuration)
       {
-        return root;
+        return (Configuration) parent;
       }
     }
     while ((parent = parent.getParent()) != null);

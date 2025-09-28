@@ -21,9 +21,9 @@ public class TestUtil
     Object[] parameters;
     Class<?>[] parameterTypes;
 
-    if (object instanceof Class c)
+    if (object instanceof Class)
     {
-      clazz = c;
+      clazz = (Class<?>) object;
       object = null;
     }
     else
