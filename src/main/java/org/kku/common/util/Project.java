@@ -2,7 +2,8 @@ package org.kku.common.util;
 
 public class Project
 {
-  private static Project m_instance;
+  private static Project m_defaultProject = new Project("default");
+  private static Project m_instance = m_defaultProject;
 
   private final String m_name;
 
@@ -13,17 +14,12 @@ public class Project
 
   public static Project getInstance()
   {
-    if (m_instance == null)
-    {
-      throw new RuntimeException("Please initialize the project first! (call Project.init())");
-    }
-
     return m_instance;
   }
 
   public static void init(String name)
   {
-    if (m_instance == null)
+    if (m_instance == m_defaultProject)
     {
       m_instance = new Project(name);
 
