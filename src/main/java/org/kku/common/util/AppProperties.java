@@ -16,11 +16,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.kku.common.util.Converters.Converter;
 
 public class AppProperties
 {
   private static final Map<String, AppProperties> m_propertiesByFileName = new HashMap<>();
+  private static Pattern VARIABLE_PATTERN = Pattern.compile("\\$\\{([^}]+)}");
 
   private final PropertyStore m_propertyStore;
 
@@ -121,7 +124,7 @@ public class AppProperties
         value = mi_defaultValue;
       }
 
-      mi_property.set(value);
+      set(value);
     }
 
     public String getName()
@@ -158,9 +161,38 @@ public class AppProperties
       property().set(mi_defaultValue);
     }
 
+    @SuppressWarnings("unchecked")
     public void set(T value)
     {
+      if (value instanceof String)
+      {
+        value = (T) expandProperties((String) value);
+      }
+
       property().set(value);
+    }
+
+    private String expandProperties(String value)
+    {
+      Matcher matcher;
+      StringBuffer sb;
+
+      sb = new StringBuffer();
+
+      matcher = VARIABLE_PATTERN.matcher(value);
+      while (matcher.find())
+      {
+        String key;
+        String replacement;
+
+        key = matcher.group(1);
+        replacement = (String) System.getProperties().getOrDefault(key, "");
+
+        matcher.appendReplacement(sb, Matcher.quoteReplacement(replacement));
+      }
+      matcher.appendTail(sb);
+
+      return sb.toString();
     }
 
     public void addListener(PropertyChangeListener<T> listener)
