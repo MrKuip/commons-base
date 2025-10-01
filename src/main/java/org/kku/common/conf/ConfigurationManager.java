@@ -4,6 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -34,6 +36,19 @@ public class ConfigurationManager
   public <T extends Configuration> T get(Class<T> clazz)
   {
     return (T) configurationByClassMap.computeIfAbsent(clazz, this::loadConfiguration);
+  }
+
+  @SuppressWarnings("unchecked")
+  public <T extends Configuration> T get(Class<T> clazz, Path path) throws IOException
+  {
+    T configuration;
+    byte[] bytes;
+
+    bytes = Files.readAllBytes(path);
+    configuration = (T) configurationByClassMap.computeIfAbsent(clazz, c -> loadConfiguration(c, bytes));
+    configuration.setPath(path);
+
+    return configuration;
   }
 
   @SuppressWarnings("unchecked")

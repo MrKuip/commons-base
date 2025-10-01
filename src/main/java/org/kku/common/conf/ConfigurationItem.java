@@ -40,6 +40,9 @@ public abstract class ConfigurationItem
 
   public void fireChanged()
   {
-    getRoot().fireChanged();
+    if (getRoot() != null)
+    {
+      getRoot().fireChanged();
+    }
   }
 }
