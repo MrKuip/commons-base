@@ -23,7 +23,19 @@ import org.kku.common.util.Converters.Converter;
 public class AppProperties
 {
   private static final Map<String, AppProperties> m_propertiesByFileName = new HashMap<>();
+  private static final Map<String, Converter<?>> m_converterByClassName = new HashMap<>();
   private static Pattern VARIABLE_PATTERN = Pattern.compile("\\$\\{([^}]+)}");
+
+  static
+  {
+    register(Boolean.class, Converters.getBooleanConverter());
+    register(String.class, Converters.getStringConverter());
+    register(Integer.class, Converters.getIntegerConverter());
+    register(Long.class, Converters.getLongConverter());
+    register(Double.class, Converters.getDoubleConverter());
+    register(Path.class, Converters.getPathConverter());
+    register(String.class, Converters.getStringConverter());
+  }
 
   private final PropertyStore m_propertyStore;
 
@@ -42,14 +54,49 @@ public class AppProperties
     return m_propertiesByFileName.computeIfAbsent(propertyFileName, name -> new AppProperties(name));
   }
 
+  static public <T> void register(Class<T> clazz, Converter<T> converter)
+  {
+    m_converterByClassName.put(clazz.getName(), converter);
+  }
+
   public PropertyStore getStore()
   {
     return m_propertyStore;
   }
 
-  public <T> AppPropertyType<T> createAppPropertyType(String name, Converter<T> converter)
+  public <T> AppPropertyType<T> createAppPropertyType(String name, Converter<T> converter, T defaultValue)
   {
-    return new AppPropertyType<>(name, converter);
+    return new AppPropertyType<>(name, converter == null ? getDefaultConverter(name, defaultValue) : converter);
+  }
+
+  private <T> Converter<T> getDefaultConverter(String name, T defaultValue)
+  {
+    Converter<T> converter;
+
+    System.out.println(defaultValue.getClass().getName());
+    System.out.println(defaultValue.getClass().isEnum());
+
+    if (defaultValue == null)
+    {
+      throw new RuntimeException("Default value is null and converter is null for: " + name);
+    }
+
+    if (defaultValue.getClass().isEnum())
+    {
+      @SuppressWarnings("unchecked")
+      Class<Enum> enumClass = (Class<Enum>) ((Enum<?>) defaultValue).getDeclaringClass();
+
+      return Converters.getEnumConverter(enumClass);
+    }
+
+    converter = (Converter<T>) m_converterByClassName.get(defaultValue.getClass().getName());
+    if (converter == null)
+    {
+      throw new RuntimeException("Default converter is null for " + name + ": defaultValue= " + defaultValue + " ("
+          + defaultValue.getClass() + ")");
+    }
+
+    return converter;
   }
 
   public class AppPropertyType<T>
@@ -118,7 +165,11 @@ public class AppProperties
     {
       T value;
 
-      value = mi_type.mi_converter.fromString(m_propertyStore.getPropertyValue(getPropertyName()));
+      value = null;
+      if (mi_type.mi_converter != null)
+      {
+        value = mi_type.mi_converter.fromString(m_propertyStore.getPropertyValue(getPropertyName()));
+      }
       if (value == null)
       {
         value = mi_defaultValue;
