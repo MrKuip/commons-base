@@ -5,6 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.StreamReadFeature;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.Module;
@@ -27,6 +28,8 @@ public class ConfigurationObjectMapper
     builder.enable(SerializationFeature.INDENT_OUTPUT);
 
     builder.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+
+    builder.enable(StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION);
 
     builder.disable(MapperFeature.AUTO_DETECT_CREATORS);
     builder.enable(MapperFeature.AUTO_DETECT_FIELDS);
