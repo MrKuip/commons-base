@@ -24,7 +24,7 @@ public class AppSettings
   {
   }
 
-  static private <T> AppPropertyType<T> createAppPropertyType(String name, Converter<T> converter)
+  static protected <T> AppPropertyType<T> createAppPropertyType(String name, Converter<T> converter)
   {
     return AppProperties.get(Project.getInstance().getName() + ".settings").createAppPropertyType(name, converter,
         null);
