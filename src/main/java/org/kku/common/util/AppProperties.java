@@ -73,9 +73,6 @@ public class AppProperties
   {
     Converter<T> converter;
 
-    System.out.println(defaultValue.getClass().getName());
-    System.out.println(defaultValue.getClass().isEnum());
-
     if (defaultValue == null)
     {
       throw new RuntimeException("Default value is null and converter is null for: " + name);
