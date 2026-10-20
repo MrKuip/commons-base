@@ -1,7 +1,7 @@
 module org.kku.common
 {
   requires transitive java.logging;
-  requires com.fasterxml.jackson.databind;
+  requires tools.jackson.databind;
 
   exports org.kku.common.util;
   exports org.kku.common.util.preferences;
@@ -10,5 +10,5 @@ module org.kku.common
   exports org.kku.common.conf.dao;
   exports org.kku.common.test;
 
-  opens org.kku.common.conf to com.fasterxml.jackson.databind;
+  opens org.kku.common.conf to tools.jackson.databind;
 }

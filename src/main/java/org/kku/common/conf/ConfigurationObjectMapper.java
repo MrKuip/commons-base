@@ -4,18 +4,16 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.core.StreamReadFeature;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.Module;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.cfg.MapperConfig;
-import com.fasterxml.jackson.databind.introspect.AnnotatedField;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper.Builder;
-import com.fasterxml.jackson.databind.module.SimpleModule;
+import tools.jackson.core.StreamReadFeature;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.JacksonModule;
+import tools.jackson.databind.PropertyNamingStrategy;
+import tools.jackson.databind.SerializationFeature;
+import tools.jackson.databind.cfg.MapperConfig;
+import tools.jackson.databind.introspect.AnnotatedField;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.json.JsonMapper.Builder;
+import tools.jackson.databind.module.SimpleModule;
 
 public class ConfigurationObjectMapper
 {
@@ -26,21 +24,23 @@ public class ConfigurationObjectMapper
 
     builder = JsonMapper.builder();
     builder.enable(SerializationFeature.INDENT_OUTPUT);
-
     builder.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
     builder.enable(StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION);
 
-    builder.disable(MapperFeature.AUTO_DETECT_CREATORS);
-    builder.enable(MapperFeature.AUTO_DETECT_FIELDS);
-    builder.disable(MapperFeature.AUTO_DETECT_GETTERS);
-    builder.disable(MapperFeature.AUTO_DETECT_IS_GETTERS);
-    builder.disable(MapperFeature.AUTO_DETECT_SETTERS);
+    builder.changeDefaultVisibility(c -> {
+      c = c.withCreatorVisibility(Visibility.NONE);
+      c = c.withFieldVisibility(Visibility.ANY);
+      c = c.withGetterVisibility(Visibility.NONE);
+      c = c.withIsGetterVisibility(Visibility.NONE);
+      c = c.withSetterVisibility(Visibility.NONE);
+      return c;
+    });
+
+    builder.propertyNamingStrategy(createNamingStrategy());
+    builder.addModule(getConfigurationModule());
 
     mapper = builder.build();
-    mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
-    mapper.setPropertyNamingStrategy(createNamingStrategy());
-    mapper.registerModule(getConfigurationModule());
 
     return mapper;
   }
@@ -93,7 +93,7 @@ public class ConfigurationObjectMapper
     };
   }
 
-  private static Module getConfigurationModule()
+  private static JacksonModule getConfigurationModule()
   {
     SimpleModule module;
 

@@ -12,7 +12,7 @@ import java.util.Set;
 import org.kku.common.util.Log;
 import org.kku.common.util.ResourceLoader;
 import org.kku.common.util.WeakHashSet;
-import com.fasterxml.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 public class ConfigurationManager
 {
@@ -137,14 +137,7 @@ public class ConfigurationManager
   private void saveConfiguration(Configuration configuration, OutputStream os)
   {
     configurationByClassMap.remove(configuration.getClass());
-    try
-    {
-      getMapper().writeValue(os, configuration);
-    }
-    catch (IOException e)
-    {
-      e.printStackTrace();
-    }
+    getMapper().writeValue(os, configuration);
   }
 
   void addConfigurationListener(Class<? extends Configuration> clazz, ConfigurationListenerIF listener)

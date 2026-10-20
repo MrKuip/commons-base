@@ -6,7 +6,7 @@ import java.util.function.Function;
 import org.junit.jupiter.api.Test;
 import org.kku.common.test.BaseTest;
 import org.kku.common.test.TestUtil;
-import com.fasterxml.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 public class ConfigurationObjectMapperTest
   extends BaseTest
